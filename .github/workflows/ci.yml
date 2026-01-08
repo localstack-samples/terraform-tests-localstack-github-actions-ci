@@ -28,30 +28,27 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: "1.9.8"
+          terraform_version: "1.11.0"
 
-      - name: Set up Python 3.10
-        id: setup-python
-        uses: actions/setup-python@v2
+      - name: Install Python
+        uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
+          python-version: '3.10'
+
+      - name: Install tflocal
+        run: |
+          pip install terraform-local
+          tflocal --version
 
       - name: Start LocalStack
+        uses: LocalStack/setup-localstack@main
+        with:
+          image-tag: 'latest'
+          install-awslocal: 'true'
+          use-pro: 'true'
+          configuration: LS_LOG=trace
         env:
-          LOCALSTACK_API_KEY: ${{ secrets.LOCALSTACK_API_KEY }}
-        run: |
-          pip install localstack awscli-local[ver1]
-          pip install terraform-local
-          docker pull localstack/localstack-pro
-
-          # Start LocalStack in the background
-          localstack start -d
-
-          # Wait 30 seconds for the LocalStack container to become ready before timing out
-          echo "Waiting for LocalStack startup..."
-          localstack wait -t 15
-
-          echo "Startup complete"
+          LOCALSTACK_AUTH_TOKEN: ${{ secrets.LOCALSTACK_AUTH_TOKEN }}
 
       - name: Run Terraform tests
         run: |
