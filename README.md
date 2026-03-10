@@ -4,10 +4,20 @@ This is a simple example of how to use LocalStack to create a serverless image r
 
 ## Requirements
 
-- LocalStack CLI
-- Terraform CLI
-- `tflocal` wrapper script
-- `awslocal` wrapper script
+- LocalStack with the [`localstack` CLI](https://docs.localstack.cloud/getting-started/installation/#localstack-cli).
+- [Terraform CLI](https://www.terraform.io/downloads) with the [`tflocal` wrapper](https://github.com/localstack/terraform-local).
+- [AWS CLI](https://docs.localstack.cloud/user-guide/integrations/aws-cli/) with the [`awslocal` wrapper](https://docs.localstack.cloud/user-guide/integrations/aws-cli/#localstack-aws-cli-awslocal).
+- A valid [LocalStack for AWS license](https://localstack.cloud/pricing). Your license provides a [`LOCALSTACK_AUTH_TOKEN`](https://docs.localstack.cloud/getting-started/auth-token/) to activate LocalStack.
+
+## Start LocalStack
+
+Start LocalStack Pro with the `LOCALSTACK_AUTH_TOKEN` pre-configured:
+
+```bash
+export LOCALSTACK_AUTH_TOKEN=<your-auth-token>
+make start
+make ready
+```
 
 ## Build the Lambda function
 
