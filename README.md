@@ -4,10 +4,10 @@ This is a simple example of how to use LocalStack to create a serverless image r
 
 ## Requirements
 
-- LocalStack with the [`localstack` CLI](https://docs.localstack.cloud/getting-started/installation/#localstack-cli).
-- [Terraform CLI](https://www.terraform.io/downloads) with the [`tflocal` wrapper](https://github.com/localstack/terraform-local).
-- [AWS CLI](https://docs.localstack.cloud/user-guide/integrations/aws-cli/) with the [`awslocal` wrapper](https://docs.localstack.cloud/user-guide/integrations/aws-cli/#localstack-aws-cli-awslocal).
-- A valid [LocalStack for AWS license](https://localstack.cloud/pricing). Your license provides a [`LOCALSTACK_AUTH_TOKEN`](https://docs.localstack.cloud/getting-started/auth-token/) to activate LocalStack.
+- LocalStack with the [`lstk` CLI](https://docs.localstack.cloud/aws/developer-tools/running-localstack/lstk/).
+- [Terraform CLI](https://www.terraform.io/downloads).
+- [AWS CLI](https://docs.localstack.cloud/user-guide/integrations/aws-cli/) is required by `lstk aws`.
+- A valid [LocalStack for AWS license](https://localstack.cloud/pricing). Your license provides a [`LOCALSTACK_AUTH_TOKEN`](https://docs.localstack.cloud/aws/getting-started/auth-token/) to activate LocalStack.
 
 ## Start LocalStack
 
@@ -16,7 +16,6 @@ Start LocalStack Pro with the `LOCALSTACK_AUTH_TOKEN` pre-configured:
 ```bash
 export LOCALSTACK_AUTH_TOKEN=<your-auth-token>
 make start
-make ready
 ```
 
 ## Build the Lambda function
@@ -36,16 +35,16 @@ rm -rf libs
 To run this example you need to execute:
 
 ```bash
-tflocal init
-tflocal plan
-tflocal apply --auto-approve
+lstk tf init
+lstk tf plan
+lstk tf apply --auto-approve
 ```
 
 After the Terraform script has been applied, you can upload an image to the S3 bucket and check the resized image in the `resized` folder. Here is an example:
 
 ```bash
-awslocal s3 cp image.png s3://original-images/image.png
-awslocal s3 ls s3://resized-images
+lstk aws s3 cp image.png s3://original-images/image.png
+lstk aws s3 ls s3://resized-images
 ```
 
 ## Run the tests
@@ -53,5 +52,5 @@ awslocal s3 ls s3://resized-images
 You can run tests using the Terraform Test framework:
 
 ```bash
-tflocal test
+lstk tf test
 ```

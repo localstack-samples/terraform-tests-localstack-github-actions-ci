@@ -4,5 +4,5 @@ cd libs && zip -r ../lambda.zip . && cd ..
 zip lambda.zip lambda_function.py
 rm -rf libs
 
-awslocal s3 cp image.png s3://original-images/image.png
-awslocal s3 ls s3://resized-images
+lstk aws s3 cp image.png s3://original-images/image.png
+lstk aws s3 ls s3://resized-images
