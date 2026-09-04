@@ -30,31 +30,20 @@ jobs:
         with:
           terraform_version: "1.11.0"
 
-      - name: Install Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-
-      - name: Install tflocal
-        run: |
-          pip install terraform-local
-          tflocal --version
+      - name: Install lstk
+        run: npm install -g @localstack/lstk
 
       - name: Start LocalStack
-        uses: LocalStack/setup-localstack@main
-        with:
-          image-tag: 'latest'
-          install-awslocal: 'true'
-          use-pro: 'true'
-          configuration: LS_LOG=trace
         env:
           LOCALSTACK_AUTH_TOKEN: ${{ secrets.LOCALSTACK_AUTH_TOKEN }}
+        run: |
+          lstk start
 
       - name: Run Terraform tests
         run: |
-          tflocal init
-          tflocal test
+          lstk tf init
+          lstk tf test
 
       - name: Check LocalStack logs
         run: |
-          localstack logs
+          lstk logs
